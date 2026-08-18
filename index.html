@@ -102,7 +102,7 @@ section{padding:clamp(3.5rem,8vw,6rem) 0}
 .btn.small{padding:.5rem .9rem;font-size:.85rem}
 :focus-visible{outline:3px solid var(--rose);outline-offset:3px;border-radius:6px}
 
-/* ---------- hero & entrada ---------- */
+/* ---------- hero & entrada inicial ---------- */
 .hero{position:relative;overflow:hidden;padding-top:clamp(2.5rem,6vw,4.5rem)}
 .hero::before{
   content:"";position:absolute;inset:-30% -10% auto -10%;height:80vh;
@@ -131,14 +131,29 @@ section{padding:clamp(3.5rem,8vw,6rem) 0}
 
 .hero-actions{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:1.75rem}
 
-/* Animaciones de entrada (Keyframes) */
-.animate-fade-up {
-  animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+/* ---------- ANIMACIONES AL HACER SCROLL (Reveal) ---------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
 }
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0);
 }
+
+/* Escalonamiento de tarjetas (Staggering) */
+.reveal-stagger > * {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal-stagger.active > *:nth-child(1) { transition-delay: 0.1s; opacity: 1; transform: translateY(0); }
+.reveal-stagger.active > *:nth-child(2) { transition-delay: 0.2s; opacity: 1; transform: translateY(0); }
+.reveal-stagger.active > *:nth-child(3) { transition-delay: 0.3s; opacity: 1; transform: translateY(0); }
+.reveal-stagger.active > *:nth-child(4) { transition-delay: 0.4s; opacity: 1; transform: translateY(0); }
+.reveal-stagger.active > *:nth-child(5) { transition-delay: 0.5s; opacity: 1; transform: translateY(0); }
 
 /* marco de foto con Zoom en Hover */
 .photo{
@@ -309,10 +324,11 @@ footer.site p{font-size:.9rem;color:#C9B4C2;margin:0 0 .6rem}
 
 /* Respeto a accesibilidad de movimiento reducido */
 @media (prefers-reduced-motion:reduce){
-  *, .dx, .animate-fade-up, .photo img, .btn::after {
+  *, .dx, .reveal, .reveal-stagger > *, .photo img, .btn::after {
     animation:none !important;
     transition:none !important;
     transform:none !important;
+    opacity:1 !important;
   }
   html{scroll-behavior:auto}
 }
@@ -329,7 +345,7 @@ footer.site p{font-size:.9rem;color:#C9B4C2;margin:0 0 .6rem}
 
 <header class="hero">
   <div class="wrap hero-grid">
-    <div class="animate-fade-up">
+    <div class="reveal">
       <span class="dx">Rosácea grado III · rinofima · rosácea ocular</span>
       <h1>Hola, soy Thalía.<em>¿Me ayudas a mejorar mi calidad de vida?</em></h1>
       <p class="lede">Estoy reuniendo $17.000.000 para costear el tratamiento médico que necesito. Cada aporte me acerca a poder ver, respirar y vivir con tranquilidad.</p>
@@ -339,7 +355,7 @@ footer.site p{font-size:.9rem;color:#C9B4C2;margin:0 0 .6rem}
       </div>
     </div>
 
-    <figure class="photo animate-fade-up" style="animation-delay: 0.15s;">
+    <figure class="photo reveal">
       <img src="https://lh3.googleusercontent.com/d/10ip_gKHQaBX0h7UteYKC_H3ckNZzEVy4" alt="Fotografía de Thalía">
     </figure>
   </div>
@@ -347,11 +363,11 @@ footer.site p{font-size:.9rem;color:#C9B4C2;margin:0 0 .6rem}
 
 <section id="meta">
   <div class="wrap">
-    <p class="eyebrow">La meta</p>
-    <div class="goal">
+    <p class="eyebrow reveal">La meta</p>
+    <div class="goal reveal">
       <p class="amount">$17.000.000<small>PESOS CHILENOS · TU AYUDA ES MI ESPERANZA</small></p>
       <p>Estoy luchando contra la rosácea grado III con rinofima y rosácea papulo-pustulosa ocular. Todo lo recaudado se destina a mi tratamiento médico y a los controles que necesito para seguirlo.</p>
-      <ul class="uses">
+      <ul class="uses reveal-stagger">
         <li><span class="tag">01</span><span><b>Medicamentos</b></span></li>
         <li><span class="tag">02</span><span><b>Exámenes médicos</b></span></li>
         <li><span class="tag">03</span><span><b>Sesiones de láser</b><small>Por un tiempo determinado, según indicación médica.</small></span></li>
@@ -363,18 +379,18 @@ footer.site p{font-size:.9rem;color:#C9B4C2;margin:0 0 .6rem}
 </section>
 
 <section class="story">
-  <div class="narrow">
+  <div class="narrow reveal">
     <p class="eyebrow">Mi situación</p>
-    <blockquote>Esto está dificultando enormemente mi vida, llegando al punto de hacer difícil la visión y la respiración. Estas limitaciones me impiden llevar una rutina normal, afectando directamente mi capacidad para estudiar, trabajar y desenvolverme socialmente con tranquilidad.</blockquote>
+    <blockquote>Esto está dificultando enormemente mi vida, llegando al punto de hacer difícil la visión y la respiración. Estas limitations me impiden llevar una rutina normal, afectando directamente mi capacidad para estudiar, trabajar y desenvolverme socialmente con tranquilidad.</blockquote>
     <cite>— Thalía</cite>
   </div>
 </section>
 
 <section id="ayudar">
   <div class="wrap">
-    <p class="eyebrow">Cómo ayudar</p>
-    <h2>Hay cuatro formas, y todas suman</h2>
-    <div class="ways">
+    <p class="eyebrow reveal">Cómo ayudar</p>
+    <h2 class="reveal">Hay cuatro formas, y todas suman</h2>
+    <div class="ways reveal-stagger">
       <div class="way">
         <div class="num">01</div>
         <h3>Haz tu aporte directo</h3>
@@ -401,10 +417,10 @@ footer.site p{font-size:.9rem;color:#C9B4C2;margin:0 0 .6rem}
 
 <section id="transferir">
   <div class="narrow">
-    <p class="eyebrow">Datos para transferir</p>
-    <h2 style="margin-bottom:1.5rem">Toca cualquier dato para copiarlo</h2>
+    <p class="eyebrow reveal">Datos para transferir</p>
+    <h2 class="reveal" style="margin-bottom:1.5rem">Toca cualquier dato para copiarlo</h2>
 
-    <div class="transfer">
+    <div class="transfer reveal">
       <header>
         <div>
           <h3>Cuenta de Thalía</h3>
@@ -427,15 +443,15 @@ footer.site p{font-size:.9rem;color:#C9B4C2;margin:0 0 .6rem}
       </footer>
     </div>
 
-    <p class="note">Después de transferir, envíale el comprobante por Instagram o al correo <a href="mailto:tratamientothalia@gmail.com">tratamientothalia@gmail.com</a>. Así ella puede agradecerte y llevar la cuenta de lo reunido.</p>
+    <p class="note reveal">Después de transferir, envíale el comprobante por Instagram o al correo <a href="mailto:tratamientothalia@gmail.com">tratamientothalia@gmail.com</a>. Así ella puede agradecerte y llevar la cuenta de lo reunido.</p>
   </div>
 </section>
 
 <section style="background:var(--paper-2);border-block:1px solid var(--blush)">
   <div class="wrap">
-    <p class="eyebrow">Qué es la rosácea grado III</p>
-    <h2>Por qué esto no es un problema estético</h2>
-    <div class="facts">
+    <p class="eyebrow reveal">Qué es la rosácea grado III</p>
+    <h2 class="reveal">Por qué esto no es un problema estético</h2>
+    <div class="facts reveal-stagger">
       <div class="fact">
         <h3>Es una enfermedad crónica de la piel</h3>
         <p>La rosácea inflama la piel del rostro por brotes. Se controla con tratamiento médico, no con cremas de farmacia.</p>
@@ -453,12 +469,12 @@ footer.site p{font-size:.9rem;color:#C9B4C2;margin:0 0 .6rem}
         <p>Combina medicamentos, controles dermatológicos periódicos y sesiones de láser. En Chile casi nada de eso está cubierto.</p>
       </div>
     </div>
-    <p class="note">Información general sobre la enfermedad, con fines informativos. El detalle del caso de Thalía lo maneja su equipo médico.</p>
+    <p class="note reveal">Información general sobre la enfermedad, con fines informativos. El detalle del caso de Thalía lo maneja su equipo médico.</p>
   </div>
 </section>
 
 <footer class="site">
-  <div class="wrap">
+  <div class="wrap reveal">
     <div>
       <h3>Luchemos con Thalía</h3>
       <p>Campaña personal para financiar el tratamiento de la rosácea grado III de Thalía R. Todos los aportes van directo a su cuenta.</p>
@@ -476,6 +492,27 @@ footer.site p{font-size:.9rem;color:#C9B4C2;margin:0 0 .6rem}
 
 <script>
 (function(){
+  // --- Observador de Intersection para animaciones de entrada al hacer Scroll ---
+  var observerOptions = {
+    root: null,
+    rootMargin: '0px 0px -50px 0px',
+    threshold: 0.15
+  };
+
+  var observer = new IntersectionObserver(function(entries, observer) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('active');
+        observer.unobserve(entry.target); // Animación ocurre solo 1 vez para optimizar
+      }
+    });
+  }, observerOptions);
+
+  document.querySelectorAll('.reveal, .reveal-stagger').forEach(function(el) {
+    observer.observe(el);
+  });
+
+  // --- Lógica del portapapeles y notificación (Toast) ---
   var toast = document.getElementById('toast'), t;
   function showToast(msg){
     toast.textContent = msg;
